@@ -1,0 +1,1 @@
+export default function Logout(){return <main className="container"><div className="auth-card"><h1>تسجيل الخروج</h1><form action="/api/auth/logout" method="post"><button className="btn btn-primary">تأكيد تسجيل الخروج</button></form></div></main>}

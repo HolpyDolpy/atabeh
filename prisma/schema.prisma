@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String?
+  phone        String?
+  passwordHash String
+  role         Role      @default(CUSTOMER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
+  orders       Order[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  ipHash    String?
+  userAgent String?
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  image     String?
+  sortOrder Int       @default(0)
+  active    Boolean   @default(true)
+  products  Product[]
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String      @db.Text
+  categoryId  String
+  category    Category    @relation(fields: [categoryId], references: [id])
+  basePrice   Decimal     @db.Decimal(10,2)
+  compareAt   Decimal?    @db.Decimal(10,2)
+  image       String
+  gallery     String[]
+  featured    Boolean     @default(false)
+  bestseller  Boolean     @default(false)
+  isNew       Boolean     @default(false)
+  active      Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  variants    Variant[]
+  orderItems  OrderItem[]
+
+  @@index([categoryId, active])
+}
+
+model Variant {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sku       String   @unique
+  size      String
+  color     String?
+  colorHex  String?
+  pattern   String?
+  image     String?
+  price     Decimal  @db.Decimal(10,2)
+  stock     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId, active])
+}
+
+model Order {
+  id            String       @id @default(cuid())
+  orderNumber   String       @unique
+  userId        String?
+  user          User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName  String
+  email         String
+  phone         String
+  addressLine1  String
+  addressLine2  String?
+  city          String
+  notes         String?
+  subtotal      Decimal      @db.Decimal(10,2)
+  shipping      Decimal      @db.Decimal(10,2)
+  total         Decimal      @db.Decimal(10,2)
+  currency      String       @default("ILS")
+  status        OrderStatus  @default(PENDING)
+  paymentRef    String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  items         OrderItem[]
+
+  @@index([status, createdAt])
+  @@index([email])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  variantId String?
+  sku       String
+  name      String
+  size      String?
+  color     String?
+  pattern   String?
+  quantity  Int
+  unitPrice Decimal @db.Decimal(10,2)
+  lineTotal Decimal @db.Decimal(10,2)
+}
+
+model RateLimit {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  count     Int      @default(0)
+  resetAt   DateTime
+  updatedAt DateTime @updatedAt
+
+  @@index([resetAt])
+}

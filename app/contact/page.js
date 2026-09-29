@@ -1,0 +1,1 @@
+export default function Contact(){return <main className="container"><div className="auth-card"><h1>تواصل معنا</h1><p>ضع هنا رقم الهاتف، واتساب، عنوان المعرض، وأوقات الدوام الخاصة بمتجرك.</p><div className="notice">هذه الصفحة جاهزة للتخصيص ببيانات عتابه الفعلية.</div></div></main>}
