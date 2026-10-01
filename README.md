@@ -168,3 +168,72 @@ The storefront now includes a fixed WhatsApp bubble that opens the Atabeh busine
 After a checkout is successfully created and verified by the server, the checkout confirmation screen shows **إرسال الطلب إلى واتساب**. The generated message includes the server-created order number, customer delivery details, verified order items and server-calculated total. The customer reviews the message in WhatsApp and presses Send.
 
 The database remains the source of truth for prices and stock; the WhatsApp message is a communication copy, not the authority that creates or prices the order.
+
+
+## V9 registration
+
+Public customer registration is available at `/register`. New public accounts are always created server-side with `role: CUSTOMER`; the browser cannot choose an admin role. Registration validates name, phone, email, password and confirmation, hashes passwords with bcrypt, rate-limits registration attempts, auto-creates a secure session, and redirects the customer to `/account`.
+
+No Prisma schema migration is required from V8 because the existing `User` model already contains name, phone, email, passwordHash and role.
+
+## V10 clean catalog + camera uploads
+
+V10 no longer seeds demo categories, products, colors, patterns, or sizes. The admin builds the catalog manually.
+
+To clear an existing TEST catalog one time (this also removes test orders, but preserves user/admin accounts):
+
+```bash
+npm run catalog:clear
+npm run seed
+```
+
+Admin category/product/variant forms support image upload and mobile camera capture. Images are resized/compressed in the browser and stored as image data URLs in PostgreSQL for this deployment-friendly version.
+
+## V11 updates
+
+- Carpet prices are now treated as **price per square meter**. A size such as `2.40x3.30` has an area of 7.92 m², so the displayed/checkout price is `7.92 × price-per-m²`.
+- Sizes are entered manually by the admin per product/variant. Accepted format examples: `2.40x3.30`, `2.4 × 3.3`.
+- The product **slug** is only the URL identifier (for example `super-hilton`). The type/origin such as `Turkish` should be created under **Types / Origin** and then selected from the product dropdown. The category/type itself also has its own slug such as `turkish`.
+- Login and registration now show inline Arabic validation/errors and loading states instead of navigating to raw JSON error pages.
+- A global skeleton loading UI is included for slower navigation.
+- New customer registrations require email verification before login.
+
+### Email verification with Resend
+
+Add these server-side environment variables locally and in Vercel:
+
+```env
+RESEND_API_KEY="re_..."
+EMAIL_FROM="Atabeh Royal Carpet <verify@yourdomain.com>"
+APP_URL="https://your-production-domain.com"
+```
+
+For local testing, `APP_URL` can be `http://localhost:3000`. In production, use the actual HTTPS site URL. Verify your sending domain in Resend before using a custom `EMAIL_FROM` address.
+
+After upgrading an existing database to V11, run:
+
+```powershell
+npx.cmd prisma generate
+npx.cmd prisma db push
+npm.cmd run seed
+```
+
+`npm.cmd run seed` ensures the admin account is marked as email-verified.
+
+## V13 UX & performance pass
+- Streamed homepage catalog sections with Suspense so the hero appears immediately while database-backed sections load.
+- Streamed shop results with a filter/results skeleton instead of a blank wait.
+- Reworked global route loading to remain visibly present long enough to be perceived and removed the mutation-observer behavior that could hide it too early.
+- Added branded navigation loading panel, shimmer skeleton cards, filters, forms, product and admin placeholders.
+- Reduced shop catalog database round trips by loading size/pattern options in one variant query.
+- Limited a single shop result page to 60 products to prevent an unbounded first render.
+- Added customer guidance with a three-step shopping journey and clearer empty states.
+- Added content-visibility hints for product/category cards and reduced animation work for users who prefer reduced motion.
+
+## V14 homepage/search UX
+- Homepage hero remains a looping video and can now be configured from Admin > الصفحة الرئيسية.
+- Admin can change the hero video URL/path, hero poster, and two homepage promotional images/text/links.
+- Header search submit is icon-only and a Home button is available in the main navigation.
+- Header categories are loaded from admin-created categories instead of a hardcoded list.
+- Search uses fuzzy matching across product names, category/type, colors, patterns, sizes and SKU, so close spellings can still produce results.
+- V14 adds the SiteSetting Prisma model; run `npx.cmd prisma db push` after upgrading.

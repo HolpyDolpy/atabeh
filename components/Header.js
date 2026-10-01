@@ -1,21 +1,11 @@
 import Link from 'next/link';
-import { getSessionUser } from '../lib/auth';
+import { Suspense } from 'react';
+import HeaderAccount, { HeaderAccountFallback } from './HeaderAccount';
 import { Icon } from './Icons';
-
-const mainCategories = [
-  ['مصري','egyptian'],
-  ['بلجيكي وحرير','belgian-silk'],
-  ['تركي','turkish'],
-  ['صوف','wool'],
-  ['مودرن','modern-collections'],
-  ['كلاسيك','royal-classic'],
-  ['ممرات','kitchen-runners'],
-  ['دائري','round']
-];
+import { prisma } from '../lib/db';
 
 export default async function Header(){
-  const user = await getSessionUser();
-
+  const categories=await prisma.category.findMany({where:{active:true},orderBy:{sortOrder:'asc'},take:10,select:{name:true,slug:true}});
   return <>
     <div className="utilitybar"><div className="container utility-inner">
       <span>توصيل سريع داخل فلسطين</span><span className="utility-sep">•</span><span>دعم مباشر عبر واتساب</span><span className="utility-spacer"/>
@@ -24,17 +14,16 @@ export default async function Header(){
 
     <header className="header header-v7">
       <div className="container header-main header-main-v7">
-        <Link href="/" className="brand brand-v7"><img src="/logo.png" alt="Atabeh Royal Carpet"/></Link>
+        <Link href="/" className="brand brand-v7" aria-label="الصفحة الرئيسية"><img src="/logo.png" alt="Atabeh Royal Carpet"/></Link>
 
         <form className="site-search site-search-v7" action="/shop" role="search">
           <Icon name="search" size={19}/>
           <input name="q" placeholder="ابحث عن سجادة، لون، نقشة أو مقاس..." maxLength={80}/>
-          <button type="submit">بحث</button>
+          <button className="search-icon-button" type="submit" aria-label="بحث" title="بحث"><Icon name="search" size={20}/></button>
         </form>
 
         <div className="icon-actions icon-actions-v7">
-          {user?.role==='ADMIN' && <Link className="icon-link admin-only-link" href="/admin" aria-label="الإدارة"><Icon name="grid"/><span>الإدارة</span></Link>}
-          <Link className="icon-link" href={user?'/account':'/login'} aria-label="الحساب"><Icon name="user"/><span>{user?'حسابي':'دخول'}</span></Link>
+          <Suspense fallback={<HeaderAccountFallback/>}><HeaderAccount/></Suspense>
           <Link className="icon-link cart-icon-link" href="/cart" aria-label="سلة التسوق"><Icon name="cart"/><span>السلة</span></Link>
         </div>
       </div>
@@ -43,16 +32,17 @@ export default async function Header(){
         <details className="mega mega-v7">
           <summary><Icon name="menu" size={18}/> كل الأقسام</summary>
           <div className="mega-panel mega-panel-v7">
-            <div><h4>حسب المنشأ والخامة</h4><Link href="/shop?category=egyptian">سجاد مصري</Link><Link href="/shop?category=belgian-silk">بلجيكي وحرير</Link><Link href="/shop?category=turkish">تركي</Link><Link href="/shop?category=wool">صوف</Link></div>
-            <div><h4>حسب الاستخدام</h4><Link href="/shop?category=kitchen-runners">مطبخ وممرات</Link><Link href="/shop?category=round">دائري</Link><Link href="/shop?category=rolls">رول وموكيت</Link><Link href="/shop?category=flooring-pvc">PVC وأرضيات</Link></div>
-            <div><h4>حسب الستايل</h4><Link href="/shop?category=royal-classic">رويال وكلاسيك</Link><Link href="/shop?category=modern-collections">مودرن</Link><Link href="/shop?filter=new">وصل حديثاً</Link><Link href="/shop?filter=best">الأكثر طلباً</Link></div>
-            <div className="mega-feature mega-feature-v7"><img src="https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&fm=jpg&q=78&w=900" alt="سجاد فاخر"/><div><strong>اختيار أسهل، تفاصيل أوضح</strong><span>لون، نقشة، مقاس ومخزون في مكان واحد.</span><Link href="/shop">عرض كل السجاد ←</Link></div></div>
+            <div><h4>الأنواع المتاحة</h4>{categories.length?categories.slice(0,5).map(c=><Link key={c.slug} href={`/shop?category=${c.slug}`}>{c.name}</Link>):<span className="small">ستظهر الأنواع هنا بعد إضافتها من الإدارة.</span>}</div>
+            <div><h4>المزيد من الأنواع</h4>{categories.slice(5,10).map(c=><Link key={c.slug} href={`/shop?category=${c.slug}`}>{c.name}</Link>)}<Link href="/shop">كل السجاد</Link></div>
+            <div><h4>تصفح سريع</h4><Link href="/shop?filter=new">وصل حديثاً</Link><Link href="/shop?filter=best">الأكثر طلباً</Link><Link href="/shop">عرض جميع المنتجات</Link></div>
+            <div className="mega-feature mega-feature-v7"><img src="/images/rug-1.png" alt="سجاد فاخر"/><div><strong>اختيار أسهل، تفاصيل أوضح</strong><span>لون، نقشة، مقاس ومخزون في مكان واحد.</span><Link href="/shop">عرض كل السجاد ←</Link></div></div>
           </div>
         </details>
 
         <nav className="primary-nav primary-nav-v7" aria-label="التنقل الرئيسي">
+          <Link className="home-nav-link" href="/"><Icon name="home" size={17}/><span>الرئيسية</span></Link>
           <Link href="/shop">كل السجاد</Link>
-          {mainCategories.map(([label,slug])=><Link key={slug} href={`/shop?category=${slug}`}>{label}</Link>)}
+          {categories.slice(0,8).map(c=><Link key={c.slug} href={`/shop?category=${c.slug}`}>{c.name}</Link>)}
           <Link className="sale-link" href="/shop?filter=best">الأكثر طلباً</Link>
         </nav>
       </div></div>

@@ -6,6 +6,7 @@ export default function AdminNav(){
     <h2>Atabeh Admin</h2>
     <div className="admin-nav-group">الإدارة</div>
     <Link href="/admin"><Icon name="home" size={17}/> لوحة التحكم</Link>
+    <Link href="/admin/homepage"><Icon name="home" size={17}/> الصفحة الرئيسية</Link>
     <Link href="/admin/products"><Icon name="grid" size={17}/> المنتجات والمنشورات</Link>
     <Link href="/admin/categories"><Icon name="menu" size={17}/> الأقسام</Link>
     <Link href="/admin/orders"><Icon name="cart" size={17}/> الطلبات</Link>
