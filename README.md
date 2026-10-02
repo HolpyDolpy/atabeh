@@ -242,3 +242,11 @@ npm.cmd run seed
 The admin homepage editor can upload MP4/WebM/MOV videos directly to Vercel Blob. Connect a **Vercel Blob** store to the Vercel project so `BLOB_READ_WRITE_TOKEN` is added automatically. Client uploads are used so large videos do not pass through the Vercel Function body limit.
 
 The **Add Type** form now submits in-place with inline Arabic validation. Invalid input or duplicate slugs no longer reload/reset the entire form.
+
+
+## V18 final polish
+- Admin homepage/product forms show inline Arabic validation instead of raw error responses.
+- Homepage hero requires both video and poster image before saving.
+- Promo sections cannot be saved empty.
+- Customer carpet totals are rounded to the nearest 5 ILS (317→315, 318→320).
+- Customer-facing final prices are shown without decimal .00 values.

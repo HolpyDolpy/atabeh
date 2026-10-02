@@ -19,11 +19,11 @@ export async function POST(request){
         if(variant.stock<requested.quantity) throw new Error('OUT_OF_STOCK');
         const pricing=calculateCarpetPrice(variant.size,variant.price);
         if(!pricing) throw new Error('INVALID_SIZE');
-        const unit=pricing.total;const line=Math.round(unit*requested.quantity*100)/100;subtotal+=line;
+        const unit=pricing.total;const line=unit*requested.quantity;subtotal+=line;
         items.push({productId:variant.productId,variantId:variant.id,sku:variant.sku,name:variant.product.name,size:variant.size,color:variant.color,pattern:variant.pattern,quantity:requested.quantity,unitPrice:unit,lineTotal:line});
       }
-      subtotal=Math.round(subtotal*100)/100;
-      const shipping=subtotal>=500?0:25;const total=Math.round((subtotal+shipping)*100)/100;
+      subtotal=Math.round(subtotal);
+      const shipping=subtotal>=500?0:25;const total=subtotal+shipping;
       const order=await tx.order.create({data:{orderNumber:orderCode(),customerName:parsed.data.customerName,email:parsed.data.email.toLowerCase(),phone:parsed.data.phone,addressLine1:parsed.data.addressLine1,addressLine2:parsed.data.addressLine2||null,city:parsed.data.city,notes:parsed.data.notes||null,subtotal,shipping,total,items:{create:items}}});
       for(const requested of parsed.data.items){await tx.variant.update({where:{id:requested.variantId},data:{stock:{decrement:requested.quantity}}})}
       return order;

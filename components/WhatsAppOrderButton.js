@@ -27,7 +27,7 @@ export function buildCartWhatsAppText(cart) {
       x.pattern ? `نقشة: ${x.pattern}` : '',
       x.size ? `مقاس: ${x.size}` : ''
     ].filter(Boolean).join(' | ');
-    const price = x.unitPrice != null ? ` | ${(Number(x.unitPrice) * (x.quantity || 1)).toFixed(2)} ₪` : '';
+    const price = x.unitPrice != null ? ` | ${Math.round(Number(x.unitPrice) * (x.quantity || 1))} ₪` : '';
     return `${i + 1}. ${x.productName || 'سجادة'}${details ? ` — ${details}` : ''} × ${x.quantity || 1}${price}`;
   });
 

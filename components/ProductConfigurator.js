@@ -91,9 +91,9 @@ export default function ProductConfigurator({ product }) {
       <div className="product-breadcrumb-v5"><span>{product.category?.name}</span><span>›</span><span>{product.name}</span></div>
       <h1 className="product-title">{product.name}</h1>
       <div className="price product-price product-price-v5">
-        {selectedPricing ? `${selectedPricing.total.toFixed(2)} ₪` : `${fallbackRate.toFixed(2)} ₪/م²`}
+        {selectedPricing ? `${selectedPricing.total} ₪` : `${fallbackRate} ₪/م²`}
       </div>
-      {selectedPricing && <div className="price-breakdown"><b>{selectedPricing.area.toFixed(2)} م²</b><span>×</span><span>{selectedPricing.rate.toFixed(2)} ₪/م²</span><span>=</span><strong>{selectedPricing.total.toFixed(2)} ₪</strong></div>}
+      {selectedPricing && <div className="price-breakdown"><b>{selectedPricing.area.toFixed(2)} م²</b><span>×</span><span>{selectedPricing.rate} ₪/م²</span><span>=</span><strong>{selectedPricing.total} ₪</strong></div>}
       <p className="product-description-v5">{product.description}</p>
 
       <div className="variant-choice-grid variant-choice-grid-v5">
