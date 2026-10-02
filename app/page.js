@@ -6,10 +6,6 @@ import PageSkeleton from '../components/PageSkeleton';
 import { Icon } from '../components/Icons';
 import { getHomeSettings } from '../lib/siteSettings';
 
-async function CatalogStats(){
-  const totalProducts=await prisma.product.count({where:{active:true}});
-  return <div className="hero-meta-v7"><span><b>{totalProducts}</b> منتج مضاف</span><span>الأنواع يضيفها المدير</span><span>المقاسات يضيفها المدير</span></div>;
-}
 
 async function CategorySection(){
   const categories=await prisma.category.findMany({where:{active:true},orderBy:{sortOrder:'asc'},take:6});
@@ -47,7 +43,7 @@ export default async function Home(){
         <source src={home.heroVideo}/>
       </video>
       <div className="hero-overlay-v7"/>
-      <div className="container hero-content-v7"><div className="hero-copy-v7"><span className="hero-kicker-v7">Atabeh Royal Carpet</span><h1>السجادة التي تكمل المكان.</h1><p>اختر النوع، اللون، النقشة والمقاس بخطوات واضحة، وشاهد السعر قبل الإضافة للسلة.</p><div className="hero-actions-v7"><Link className="btn btn-primary hero-primary-v7" href="/shop">ابدأ التسوق</Link><Link className="btn hero-ghost-v7" href="/shop?filter=best">الأكثر طلباً</Link></div><Suspense fallback={<div className="hero-meta-v7 hero-meta-loading"><span className="skeleton"/><span className="skeleton"/><span className="skeleton"/></div>}><CatalogStats/></Suspense></div></div>
+      <div className="container hero-content-v7"><div className="hero-copy-v7"><span className="hero-kicker-v7">Atabeh Royal Carpet</span><h1>السجادة التي تكمل المكان.</h1><p>اختر النوع، اللون، النقشة والمقاس بخطوات واضحة، وشاهد السعر قبل الإضافة للسلة.</p><div className="hero-actions-v7"><Link className="btn btn-primary hero-primary-v7" href="/shop">ابدأ التسوق</Link><Link className="btn hero-ghost-v7" href="/shop?filter=best">الأكثر طلباً</Link></div></div></div>
     </section>
 
     <Suspense fallback={<SectionSkeleton/>}><CategorySection/></Suspense>

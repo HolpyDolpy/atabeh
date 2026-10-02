@@ -7,7 +7,7 @@ function orderWhatsAppText(order, customer) {
     const details = [x.color ? `لون: ${x.color}` : '',x.pattern ? `نقشة: ${x.pattern}` : '',x.size ? `مقاس: ${x.size}` : ''].filter(Boolean).join(' | ');
     return `${i + 1}. ${x.name}${details ? ` — ${details}` : ''} × ${x.quantity} — ${Number(x.lineTotal).toFixed(2)} ₪`;
   });
-  return ['طلب جديد — عتابه للسجاد',`رقم الطلب: ${order.orderNumber}`,'',`الاسم: ${customer.customerName}`,`الهاتف: ${customer.phone}`,`المدينة: ${customer.city}`,`العنوان: ${customer.addressLine1}${customer.addressLine2 ? `، ${customer.addressLine2}` : ''}`,customer.notes ? `ملاحظات: ${customer.notes}` : '','', 'تفاصيل الطلب:',...lines,'',`المجموع الفرعي: ${Number(order.subtotal).toFixed(2)} ₪`,`التوصيل: ${Number(order.shipping).toFixed(2)} ₪`,`الإجمالي: ${Number(order.total).toFixed(2)} ₪`].filter(Boolean).join('\n');
+  return ['طلب جديد — عتبة للسجاد',`رقم الطلب: ${order.orderNumber}`,'',`الاسم: ${customer.customerName}`,`الهاتف: ${customer.phone}`,`المدينة: ${customer.city}`,`العنوان: ${customer.addressLine1}${customer.addressLine2 ? `، ${customer.addressLine2}` : ''}`,customer.notes ? `ملاحظات: ${customer.notes}` : '','', 'تفاصيل الطلب:',...lines,'',`المجموع الفرعي: ${Number(order.subtotal).toFixed(2)} ₪`,`التوصيل: ${Number(order.shipping).toFixed(2)} ₪`,`الإجمالي: ${Number(order.total).toFixed(2)} ₪`].filter(Boolean).join('\n');
 }
 
 export default function Checkout(){
