@@ -237,3 +237,8 @@ npm.cmd run seed
 - Header categories are loaded from admin-created categories instead of a hardcoded list.
 - Search uses fuzzy matching across product names, category/type, colors, patterns, sizes and SKU, so close spellings can still produce results.
 - V14 adds the SiteSetting Prisma model; run `npx.cmd prisma db push` after upgrading.
+
+## V16: homepage video upload
+The admin homepage editor can upload MP4/WebM/MOV videos directly to Vercel Blob. Connect a **Vercel Blob** store to the Vercel project so `BLOB_READ_WRITE_TOKEN` is added automatically. Client uploads are used so large videos do not pass through the Vercel Function body limit.
+
+The **Add Type** form now submits in-place with inline Arabic validation. Invalid input or duplicate slugs no longer reload/reset the entire form.

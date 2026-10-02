@@ -246,3 +246,6 @@
 .admin-home-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.admin-home-panel{border:1px solid #ebe4db;border-radius:18px;padding:18px;background:#fcfaf7}.admin-home-panel h3{margin-top:0}
 .filter-search-wrap{display:grid;grid-template-columns:1fr 44px;border:1px solid #d9d4ca;border-radius:12px;overflow:hidden;background:#fff}.filter-search-wrap input{border:0!important;border-radius:0!important}.filter-search-button{border:0;background:#f6efe6;color:var(--red);font-size:24px;cursor:pointer}.field-hint{font-size:11px;color:#8a8179;margin:5px 0 0}.search-assist{margin:7px 0 0;color:var(--red);font-size:13px;font-weight:700}
 @media(max-width:800px){.home-promo-grid,.admin-home-grid{grid-template-columns:1fr}.home-promo-card{min-height:300px}.brand-v7{transform:translateX(3px)}}
+
+/* V16 admin upload + form polish */
+.admin-video-preview{margin-top:14px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#111;max-width:760px}.admin-video-preview video{display:block;width:100%;max-height:420px}.upload-progress{height:8px;border-radius:999px;background:#ece7df;overflow:hidden;margin-top:12px;max-width:620px}.upload-progress span{display:block;height:100%;background:var(--red);transition:width .2s ease}.success-notice{margin:12px 0}.admin-video-actions{align-items:center;flex-wrap:wrap}

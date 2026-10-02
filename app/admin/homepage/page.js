@@ -1,4 +1,5 @@
 import AdminImagePicker from '../../../components/AdminImagePicker';
+import AdminVideoPicker from '../../../components/AdminVideoPicker';
 import { getHomeSettings } from '../../../lib/siteSettings';
 
 export default async function HomepageAdmin(){
@@ -9,7 +10,7 @@ export default async function HomepageAdmin(){
       <h2>فيديو الواجهة الرئيسية</h2>
       <form action="/api/admin/homepage" method="post">
         <input type="hidden" name="section" value="hero"/>
-        <div className="field"><label>رابط / مسار الفيديو MP4</label><input name="heroVideo" defaultValue={s.heroVideo} placeholder="/videos/hero-loop.mp4 أو https://.../video.mp4" required/></div>
+        <AdminVideoPicker name="heroVideo" label="فيديو الواجهة الرئيسية" defaultValue={s.heroVideo}/>
         <AdminImagePicker name="heroPoster" label="صورة الفيديو قبل التشغيل / عند تعذر الفيديو" defaultValue={s.heroPoster}/>
         <button className="btn btn-primary" type="submit">حفظ الفيديو</button>
       </form>

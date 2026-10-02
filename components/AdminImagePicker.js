@@ -41,6 +41,7 @@ export default function AdminImagePicker({ name='image', label='الصورة', d
   const [value, setValue] = useState(defaultValue || '');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [showUrl, setShowUrl] = useState(false);
   const uploadRef = useRef(null);
   const cameraRef = useRef(null);
 
@@ -59,11 +60,12 @@ export default function AdminImagePicker({ name='image', label='الصورة', d
     <div className="admin-image-actions">
       <button className="btn btn-soft" type="button" onClick={()=>uploadRef.current?.click()} disabled={busy}>{busy?'جاري تجهيز الصورة...':'رفع صورة'}</button>
       <button className="btn btn-soft" type="button" onClick={()=>cameraRef.current?.click()} disabled={busy}>التقاط صورة الآن</button>
-      {value && <button className="btn btn-danger" type="button" onClick={()=>setValue('')}>إزالة الصورة</button>}
+      <button className="btn btn-soft" type="button" onClick={()=>setShowUrl(v=>!v)}>{showUrl?'إخفاء الرابط':'استخدام رابط'}</button>
+      {value && <button className="btn btn-danger" type="button" onClick={()=>setValue('')}>إزالة</button>}
     </div>
     <input ref={uploadRef} className="admin-file-input" type="file" accept="image/*" onChange={e=>onFile(e.target.files?.[0])}/>
     <input ref={cameraRef} className="admin-file-input" type="file" accept="image/*" capture="environment" onChange={e=>onFile(e.target.files?.[0])}/>
-    <input className="admin-image-url" value={value.startsWith('data:image/')?'':value} onChange={e=>setValue(e.target.value)} placeholder="أو الصق رابط HTTPS / مسار صورة"/>
+    {showUrl && <input className="admin-image-url" value={value.startsWith('data:image/')?'':value} onChange={e=>setValue(e.target.value)} placeholder="الصق رابط HTTPS / مسار صورة"/>}
     {preview && <div className="admin-image-preview"><img src={value} alt="معاينة الصورة"/></div>}
     <p className="small">على الهاتف زر «التقاط صورة الآن» يفتح الكاميرا الخلفية. يتم ضغط الصورة قبل الإرسال.</p>
     {error && <p className="inline-warning">{error}</p>}

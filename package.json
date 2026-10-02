@@ -1,6 +1,6 @@
 {
   "name": "atabeh-royal-carpet-store",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -19,7 +19,8 @@
     "next": "^15.5.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "zod": "^4.1.5"
+    "zod": "^4.1.5",
+    "@vercel/blob": "^2.8.0"
   },
   "devDependencies": {
     "prisma": "^6.16.2"

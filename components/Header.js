@@ -9,7 +9,6 @@ export default async function Header(){
   return <>
     <div className="utilitybar"><div className="container utility-inner">
       <span>توصيل سريع داخل فلسطين</span><span className="utility-sep">•</span><span>دعم مباشر عبر واتساب</span><span className="utility-spacer"/>
-      <Link href="/shop?filter=new">وصل حديثاً</Link><Link href="/shop?filter=best">الأكثر طلباً</Link>
     </div></div>
 
     <header className="header header-v7">
@@ -17,7 +16,6 @@ export default async function Header(){
         <Link href="/" className="brand brand-v7" aria-label="الصفحة الرئيسية"><img src="/logo.png" alt="Atabeh Royal Carpet"/></Link>
 
         <form className="site-search site-search-v7" action="/shop" role="search">
-          <Icon name="search" size={19}/>
           <input name="q" placeholder="ابحث عن سجادة، لون، نقشة أو مقاس..." maxLength={80}/>
           <button className="search-icon-button" type="submit" aria-label="بحث" title="بحث"><Icon name="search" size={20}/></button>
         </form>
@@ -43,7 +41,6 @@ export default async function Header(){
           <Link className="home-nav-link" href="/"><Icon name="home" size={17}/><span>الرئيسية</span></Link>
           <Link href="/shop">كل السجاد</Link>
           {categories.slice(0,8).map(c=><Link key={c.slug} href={`/shop?category=${c.slug}`}>{c.name}</Link>)}
-          <Link className="sale-link" href="/shop?filter=best">الأكثر طلباً</Link>
         </nav>
       </div></div>
     </header>
