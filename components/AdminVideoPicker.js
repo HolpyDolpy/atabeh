@@ -33,7 +33,14 @@ export default function AdminVideoPicker({name='heroVideo', label='فيديو ا
       setValue(blob.url);
       setProgress(100);
     }catch(e){
-      setError(e?.message?.includes('BLOB')?'خدمة رفع الفيديو غير مهيأة بعد. اربط Vercel Blob بالمشروع ثم حاول مرة أخرى.':'تعذر رفع الفيديو. تحقق من الاتصال وحاول مرة أخرى.');
+      const msg=String(e?.message||'');
+      if(msg.includes('BLOB')||msg.toLowerCase().includes('token')){
+        setError('خدمة رفع الفيديو غير مهيأة بشكل صحيح. تحقق من Vercel Blob ثم أعد المحاولة.');
+      }else if(msg.includes('مصرح')||msg.toLowerCase().includes('unauthorized')){
+        setError('انتهت جلسة الإدارة أو لا تملك الصلاحية. سجّل الدخول من جديد ثم حاول مرة أخرى.');
+      }else{
+        setError(msg||'تعذر رفع الفيديو. تحقق من الاتصال وحاول مرة أخرى.');
+      }
     }finally{setBusy(false)}
   }
 
