@@ -153,7 +153,7 @@
 .header-v7 .container{padding-top:0;padding-bottom:0}
 .header-main-v7{direction:ltr;display:grid;grid-template-columns:auto minmax(320px,1fr) auto;gap:18px;align-items:center;min-height:64px;padding-top:6px;padding-bottom:6px}
 .header-main-v7>.brand-v7{justify-self:start;direction:rtl}.brand-v7 img{width:92px;height:56px;object-fit:contain}
-.header-main-v7>.site-search-v7{direction:rtl}.site-search-v7{height:48px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;padding-right:15px;border:1px solid #ded7ce;border-radius:16px;background:#fff;overflow:hidden;box-shadow:none}.site-search-v7 svg{color:#8a7d72}.site-search-v7 input{border:0;outline:0;padding:0 12px;background:transparent;min-width:0}.site-search-v7 button{align-self:stretch;border:0;background:var(--red);color:#fff;padding:0 22px;font-weight:800;cursor:pointer}
+.header-main-v7>.site-search-v7{direction:rtl}.site-search-v7{height:48px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;padding-right:0;border:0;border-radius:0;background:transparent;overflow:visible;box-shadow:none}.site-search-v7 svg{color:#8a7d72}.site-search-v7 input{border:0;outline:0;padding:0 14px;background:transparent;min-width:0;box-shadow:none}.site-search-v7 button{align-self:stretch;border:0;background:var(--red);color:#fff;padding:0 22px;font-weight:800;cursor:pointer;border-radius:12px}
 .header-main-v7>.icon-actions-v7{justify-self:end;direction:rtl}.icon-actions-v7{gap:9px}.icon-actions-v7 .icon-link{min-width:54px;padding:7px 6px;border-radius:12px}.icon-actions-v7 .icon-link:hover{background:#faf6ef}.admin-only-link{color:var(--red)}
 .navrow-v7{border-top:1px solid #f2eee8;border-bottom:1px solid #ece6de;background:#fff}.navrow-inner-v7{display:flex;align-items:center;gap:14px;min-height:50px}.primary-nav-v7{display:flex;gap:4px;align-items:center;overflow:hidden;flex:1}.primary-nav-v7 a{padding:10px 10px;border-radius:9px;font-size:13px;font-weight:750;white-space:nowrap}.primary-nav-v7 a:hover{background:#faf4e9;color:var(--red)}
 .mega-v7 summary{background:#f7f0e5}.mega-panel-v7{grid-template-columns:1fr 1fr 1fr 1.35fr;width:min(930px,calc(100vw - 32px))}.mega-feature-v7{background:#f8f3eb}.mega-feature-v7 img{height:142px}
@@ -300,9 +300,11 @@
     grid-row:2;
     margin:0;
     height:46px;
-    border-radius:14px;
-    padding-right:12px;
-    box-shadow:0 4px 16px rgba(43,33,27,.05);
+    border:0;
+    border-radius:0;
+    padding-right:0;
+    background:transparent;
+    box-shadow:none;
   }
   .site-search-v7 input{
     font-size:15px;
